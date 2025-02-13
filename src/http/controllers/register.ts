@@ -27,7 +27,7 @@ export async function register(
             return response.status(409).send({ message: error.message })
         }
 
-        return response.status(500).send()
+        throw error
     }
 
     return response.status(201).send()
