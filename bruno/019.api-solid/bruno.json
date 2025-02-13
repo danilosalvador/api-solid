@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "019.api-solid",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

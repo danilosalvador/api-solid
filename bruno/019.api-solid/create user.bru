@@ -1,0 +1,19 @@
+meta {
+  name: create user
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3333/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Danilo Salvador",
+    "email": "danilo.salvador@smartlogic.com.br",
+    "password": "Api@321"
+  }
+}
