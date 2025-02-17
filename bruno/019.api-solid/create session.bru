@@ -1,0 +1,18 @@
+meta {
+  name: create session
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3333/sessions
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "danilo.salvador10@smartlogic.com.br",
+    "password": "Api@123"
+  }
+}
