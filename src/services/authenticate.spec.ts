@@ -1,19 +1,24 @@
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 import { hash } from 'bcryptjs'
 
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { AuthenticateService } from './authenticate'
 import { InvalidCredentialsError } from '@/errors/invalid-credentials-error'
 
-describe('Authenticate Use Case', () => {
-    it('should be able to authenticate', async () => {
-        const usersRepository = new InMemoryUsersRepository()
-        const service = new AuthenticateService(usersRepository)
+let repository: InMemoryUsersRepository
+let service: AuthenticateService
 
+describe('Authenticate Use Case', () => {
+    beforeEach(() => {
+        repository = new InMemoryUsersRepository()
+        service = new AuthenticateService(repository)
+    })
+
+    it('should be able to authenticate', async () => {
         const password = '123456'
         const password_hash = await hash(password, 8)
 
-        await usersRepository.create({
+        await repository.create({
             name: 'John Doe',
             email: 'johndoe@example.com',
             password_hash,
@@ -28,9 +33,6 @@ describe('Authenticate Use Case', () => {
     })
 
     it('should be able to authenticate with wrong email', async () => {
-        const usersRepository = new InMemoryUsersRepository()
-        const service = new AuthenticateService(usersRepository)
-
         expect(
             async () =>
                 await service.execute({
@@ -41,12 +43,9 @@ describe('Authenticate Use Case', () => {
     })
 
     it('should be able to authenticate with wrong password', async () => {
-        const usersRepository = new InMemoryUsersRepository()
-        const service = new AuthenticateService(usersRepository)
-
         const password_hash = await hash('123456', 8)
 
-        await usersRepository.create({
+        await repository.create({
             name: 'John Doe',
             email: 'johndoe@example.com',
             password_hash,

@@ -1,4 +1,4 @@
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 import { compare } from 'bcryptjs'
 
 import { UserRegisterService } from './register'
@@ -6,12 +6,17 @@ import { UserRegisterService } from './register'
 import { UserAlreadyExistsError } from '@/errors/user-already-exists-error'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 
-describe('Register Use Case', () => {
-    it('should be able to register', async () => {
-        const usersRepository = new InMemoryUsersRepository()
-        const userRegisterService = new UserRegisterService(usersRepository)
+let repository: InMemoryUsersRepository
+let service: UserRegisterService
 
-        const { user } = await userRegisterService.execute({
+describe('Register Use Case', () => {
+    beforeEach(() => {
+        repository = new InMemoryUsersRepository()
+        service = new UserRegisterService(repository)
+    })
+
+    it('should be able to register', async () => {
+        const { user } = await service.execute({
             name: 'John Doe',
             email: 'johndoe@example.com',
             password: '123456',
@@ -21,12 +26,9 @@ describe('Register Use Case', () => {
     })
 
     it('should hash user password upon registration', async () => {
-        const usersRepository = new InMemoryUsersRepository()
-        const userRegisterService = new UserRegisterService(usersRepository)
-
         const password = '123456'
 
-        const { user } = await userRegisterService.execute({
+        const { user } = await service.execute({
             name: 'John Doe',
             email: 'johndoe@example.com',
             password,
@@ -38,19 +40,16 @@ describe('Register Use Case', () => {
     })
 
     it('should not allow registration with an already registered email', async () => {
-        const usersRepository = new InMemoryUsersRepository()
-        const userRegisterService = new UserRegisterService(usersRepository)
-
         const email = 'johndoe@example.com'
 
-        await userRegisterService.execute({
+        await service.execute({
             name: 'John Doe',
             email,
             password: '123456',
         })
 
         expect(async () => {
-            await userRegisterService.execute({
+            await service.execute({
                 name: 'John Doe',
                 email,
                 password: '123456',
