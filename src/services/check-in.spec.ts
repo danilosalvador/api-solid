@@ -2,14 +2,27 @@ import { expect, describe, it, vi, beforeEach, afterEach } from 'vitest'
 
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
 import { CheckInService } from './check-in'
+import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
+import { Decimal } from '@prisma/client/runtime/library.js'
 
-let repository: InMemoryCheckInsRepository
+let repositoryCheckIns: InMemoryCheckInsRepository
+let repositoryGyms: InMemoryGymsRepository
 let service: CheckInService
 
 describe('Get User Profile Use Case', () => {
     beforeEach(() => {
-        repository = new InMemoryCheckInsRepository()
-        service = new CheckInService(repository)
+        repositoryCheckIns = new InMemoryCheckInsRepository()
+        repositoryGyms = new InMemoryGymsRepository()
+        service = new CheckInService(repositoryCheckIns, repositoryGyms)
+
+        repositoryGyms.gyms.push({
+            id: 'gym-id',
+            title: 'Academia',
+            description: '',
+            phone: '',
+            latitude: new Decimal(-23.4099604),
+            longitude: new Decimal(-47.3804479),
+        })
 
         vi.useFakeTimers()
     })
@@ -22,6 +35,8 @@ describe('Get User Profile Use Case', () => {
         const { checkIn } = await service.execute({
             userId: 'user-id',
             gymId: 'gym-id',
+            userLatitude: -23.4099604,
+            userLongitude: -47.3804479,
         })
 
         expect(checkIn.id).toEqual(expect.any(String))
@@ -33,6 +48,8 @@ describe('Get User Profile Use Case', () => {
         const { checkIn } = await service.execute({
             userId: 'user-id',
             gymId: 'gym-id',
+            userLatitude: -23.4099604,
+            userLongitude: -47.3804479,
         })
 
         await expect(
@@ -40,6 +57,8 @@ describe('Get User Profile Use Case', () => {
                 await service.execute({
                     userId: 'user-id',
                     gymId: 'gym-id',
+                    userLatitude: -23.4099604,
+                    userLongitude: -47.3804479,
                 })
         ).rejects.toBeInstanceOf(Error)
     })
@@ -50,6 +69,8 @@ describe('Get User Profile Use Case', () => {
         await service.execute({
             userId: 'user-id',
             gymId: 'gym-id',
+            userLatitude: -23.4099604,
+            userLongitude: -47.3804479,
         })
 
         vi.setSystemTime(new Date(1986, 10, 20, 19, 45, 0))
@@ -57,6 +78,8 @@ describe('Get User Profile Use Case', () => {
         const { checkIn } = await service.execute({
             userId: 'user-id',
             gymId: 'gym-id',
+            userLatitude: -23.4099604,
+            userLongitude: -47.3804479,
         })
 
         expect(checkIn.id).toEqual(expect.any(String))
