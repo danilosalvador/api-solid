@@ -1,7 +1,3 @@
-import { compare } from 'bcryptjs'
-
-import { InvalidCredentialsError } from '@/errors/invalid-credentials-error'
-
 import type { UsersRepository } from '@/repositories/users-repository'
 import type { User } from '@prisma/client'
 import { NotFoundError } from '@/errors/not-found-error'

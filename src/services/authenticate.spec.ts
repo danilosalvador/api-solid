@@ -33,7 +33,7 @@ describe('Authenticate Use Case', () => {
     })
 
     it('should be able to authenticate with wrong email', async () => {
-        expect(
+        await expect(
             async () =>
                 await service.execute({
                     email: 'johndoe@example.com',
@@ -51,7 +51,7 @@ describe('Authenticate Use Case', () => {
             password_hash,
         })
 
-        expect(
+        await expect(
             async () =>
                 await service.execute({
                     email: 'johndoe@example.com',
