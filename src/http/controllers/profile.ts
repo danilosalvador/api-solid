@@ -9,5 +9,5 @@ export async function profile(request: FastifyRequest, response: FastifyReply) {
     })
 
     const { password_hash, ...userWithoutPassword } = user
-    return response.status(200).send({ userWithoutPassword })
+    return response.status(200).send({ user: userWithoutPassword })
 }
