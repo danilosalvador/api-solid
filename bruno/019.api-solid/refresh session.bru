@@ -1,13 +1,18 @@
 meta {
-  name: create session
+  name: refresh session
   type: http
-  seq: 2
+  seq: 4
 }
 
-post {
-  url: http://localhost:3333/sessions
+patch {
+  url: http://localhost:3333/token/refresh
   body: json
   auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Cookie: refreshToken={{session}}
 }
 
 body:json {
