@@ -11,20 +11,26 @@ export async function refresh(request: FastifyRequest, response: FastifyReply) {
         Exemplo: alguma tela que lista os dispositivos conectados para serem invalidados
     */
 
+    const { role, sub } = request.user
+
     const token = await response.jwtSign(
-        {},
+        {
+            role,
+        },
         {
             sign: {
-                sub: request.user.sub,
+                sub,
             },
         }
     )
 
     const refreshToken = await response.jwtSign(
-        {},
+        {
+            role,
+        },
         {
             sign: {
-                sub: request.user.sub,
+                sub,
                 expiresIn: '7d',
             },
         }

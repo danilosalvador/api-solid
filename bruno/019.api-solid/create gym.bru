@@ -1,0 +1,19 @@
+meta {
+  name: create gym
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:3333/gyms
+  body: none
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQURNSU4iLCJzdWIiOiIyZjEyMTRmYi05OTgyLTQ2MTMtOTAwYy00MTA4N2QxNzllYTciLCJpYXQiOjE3NDEyOTU0NzMsImV4cCI6MTc0MTI5NjA3M30.ZONVy9hSVGum1df0Xop0mwXIMwroIGnPz3xQ4ZjSJ0A
+}
